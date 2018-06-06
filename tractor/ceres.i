@@ -230,15 +230,15 @@ static PyObject* real_ceres_forced_phot(PyObject* blocks,
     //
     // .inner_itearation_tolerance
     // .inner_iteration_ordering
-    // .logging_type
+    options.logging_type = ceres::SILENT;
     // .minimizer_progress_to_stdout
     // .numeric_derivative_relative_step_size
     
     Solver::Summary summary;
     Solve(options, &problem, &summary);
 
-    if (verbose)
-        printf("%s\n", summary.BriefReport().c_str());
+    //if (verbose)
+    //    printf("%s\n", summary.BriefReport().c_str());
     //std::cout << summary.FullReport() << "\n";
 
     if (nonneg) {
@@ -343,11 +343,11 @@ public:
     virtual ceres::CallbackReturnType operator()
     (const ceres::IterationSummary& summary) {
         //printf("Cost change: %g\n", summary.cost_change);
-        printf("Callback: step size %g, line search evals %i,%i,%i, linear solver iters %i\n",
-               summary.step_size, summary.line_search_function_evaluations,
-               summary.line_search_gradient_evaluations,
-               summary.line_search_iterations,
-               summary.linear_solver_iterations);
+        //printf("Callback: step size %g, line search evals %i,%i,%i, linear solver iters %i\n",
+        //       summary.step_size, summary.line_search_function_evaluations,
+        //       summary.line_search_gradient_evaluations,
+        //       summary.line_search_iterations,
+        //       summary.linear_solver_iterations);
         if (summary.cost_change > 0 && summary.cost_change < _dlnp) {
             return ceres::SOLVER_TERMINATE_SUCCESSFULLY;
         }
@@ -562,7 +562,8 @@ static PyObject* ceres_opt(PyObject* tractor,
 
     // Run the solver!
     Solver::Options options;
-    options.minimizer_progress_to_stdout = print_progress;
+    options.minimizer_progress_to_stdout = false;
+    options.minimizer_progress_to_stdout = false;
     options.linear_solver_type = ceres::SPARSE_SCHUR;
     options.jacobi_scaling = scale_columns;
     // not in ceres-solver 1.12.0?
@@ -580,7 +581,7 @@ static PyObject* ceres_opt(PyObject* tractor,
     Solve(options, &problem, &summary);
     //printf("%s\n", summary.BriefReport().c_str());
 
-    printf("%s\n", summary.FullReport().c_str());
+    //printf("%s\n", summary.FullReport().c_str());
 
     if (get_variance && (summary.termination_type == ceres::CONVERGENCE)) {
         if (!PyArray_Check(py_variance)) {
