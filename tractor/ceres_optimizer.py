@@ -292,9 +292,9 @@ class CeresOptimizer(Optimizer):
                     continue
                 # DEBUG
                 if len(umod.shape) != 2:
-                    print('zi', zi)
-                    print('modi', modi)
-                    print('umod', umod)
+                    logverb('zi', zi)
+                    logverb('modi', modi)
+                    logverb('umod', umod)
                 umod.clipTo(W, H)
                 umod.trimToNonZero()
                 if umod.patch is None:
@@ -388,11 +388,11 @@ class CeresTractorAdapter(object):
         self.scale = scales
 
     def getImage(self, i):
-        print('CeresTractorAdapter: getImage(%i)' % i)
+        logverb('CeresTractorAdapter: getImage(%i)' % i)
         return self.tractor.getImage(i)
 
     def getChiImage(self, i):
-        print('CeresTractorAdapter: getChiImage(%i)' % i)
+        logverb('CeresTractorAdapter: getChiImage(%i)' % i)
         return self.tractor.getChiImage(i)
 
     def _getOneImageDerivs(self, i):
@@ -402,5 +402,5 @@ class CeresTractorAdapter(object):
         return derivs
 
     def setParams(self, p):
-        print('CeresTractorAdapter: setParams:', self.offset + self.scale * p)
+        logverb('CeresTractorAdapter: setParams:', self.offset + self.scale * p)
         return self.tractor.setParams(self.offset + self.scale * p)
