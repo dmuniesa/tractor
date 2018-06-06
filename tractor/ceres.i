@@ -17,14 +17,16 @@
 #include <assert.h>
 #include <sys/param.h>
 #include "glog/logging.h"
+#include "gflags/gflags.h"
+
 %}
 
 %init %{
     // numpy
     import_array();
 
-    FLAGS_minloglevel = 3;
     google::InitGoogleLogging("ceres.i");
+    google::SetCommandLineOption("GLOG_minloglevel", "3");
 %}
 
 %{
