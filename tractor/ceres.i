@@ -24,6 +24,7 @@
     import_array();
 
     google::InitGoogleLogging("ceres.i");
+    google::SetCommandLineOption("GLOG_minloglevel", "2");
 %}
 
 %{
