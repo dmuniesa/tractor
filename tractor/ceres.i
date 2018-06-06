@@ -23,8 +23,8 @@
     // numpy
     import_array();
 
+    FLAGS_minloglevel = 3;
     google::InitGoogleLogging("ceres.i");
-    google::SetCommandLineOption("GLOG_minloglevel", "2");
 %}
 
 %{
