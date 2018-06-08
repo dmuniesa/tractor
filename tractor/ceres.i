@@ -340,11 +340,11 @@ public:
     virtual ceres::CallbackReturnType operator()
     (const ceres::IterationSummary& summary) {
         //printf("Cost change: %g\n", summary.cost_change);
-        printf("Callback: step size %g, line search evals %i,%i,%i, linear solver iters %i\n",
-               summary.step_size, summary.line_search_function_evaluations,
-               summary.line_search_gradient_evaluations,
-               summary.line_search_iterations,
-               summary.linear_solver_iterations);
+        ////printf("Callback: step size %g, line search evals %i,%i,%i, linear solver iters %i\n",
+        ////       summary.step_size, summary.line_search_function_evaluations,
+        ////       summary.line_search_gradient_evaluations,
+        ////       summary.line_search_iterations,
+        ////       summary.linear_solver_iterations);
         if (summary.cost_change > 0 && summary.cost_change < _dlnp) {
             return ceres::SOLVER_TERMINATE_SUCCESSFULLY;
         }
@@ -576,8 +576,10 @@ static PyObject* ceres_opt(PyObject* tractor,
     Solver::Summary summary;
     Solve(options, &problem, &summary);
     //printf("%s\n", summary.BriefReport().c_str());
-
-    printf("%s\n", summary.FullReport().c_str());
+    
+    if (print_progress) {
+        printf("%s\n", summary.FullReport().c_str());
+    }
 
     if (get_variance && (summary.termination_type == ceres::CONVERGENCE)) {
         if (!PyArray_Check(py_variance)) {
